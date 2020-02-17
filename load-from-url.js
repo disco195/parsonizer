@@ -2,7 +2,6 @@ const loadFromURL = () => {
   const url = new URL(window.location.href);
   const code = url.searchParams.get("code");
   const snippet = url.searchParams.get("snippet");
-  console.log(url)
 
   let parsonsCode;
   if (code !== null) {
@@ -15,7 +14,14 @@ const loadFromURL = () => {
     parsonsCode = decoded.replace(/\%28/g, '(').replace(/\%29/g, ')');
   } else {
     // console.log(4)
-    parsonsCode = 'const x = "y";';
+    parsonsCode =
+      "function revereString(str) {\n" +
+      "  const splitted = str.split('');\n" +
+      "  const reversed = splitted.reverse();\n" +
+      "  const joined = reversed.join('');\n" +
+      "  return joined;\n" +
+      "};\n" +
+      "return reversed; #distractor"
   };
 
   function displayErrors(fb) {
