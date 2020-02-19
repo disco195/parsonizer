@@ -13,22 +13,37 @@
 
   <script src="./parsonizer.js"></script>
 
+  <script src="./ace/ace.js" type="text/javascript" charset="utf-8"></script>
+
   <script src='./init.js'></script>
 </head>
 
 <body>
 
-  <div style='display:flex;flex-direction: row;justify-content:space-around;' id='parsons-zone'>
-    <div id="sortableTrash" class="sortable-code"></div>
-    <div id="sortable" class="sortable-code"></div>
-    <div style="clear:both;"></div>
-  </div>
+  <section id='main'>
+    <div id='parsons'>
+      <span style='display:flex;flex-direction: row;' id="control-panel">
+        <button id='edit-code'>edit code</button>
+        <a href="#open-modal"><button id='review-guesses'>review guesses</button></a>
+        <button id='newInstanceLink'>re-shuffle</button>
+        <button id='feedbackLink'>evaluate</button>
+      </span>
+      <br>
+      <div style='display:flex;flex-direction: row;justify-content:space-around;' id='parsons-zone'>
+        <div id="sortableTrash" class="sortable-code"></div>
+        <div id="sortable" class="sortable-code"></div>
+        <div style="clear:both;"></div>
+      </div>
+    </div>
+    <div id='editor-container'>
+      <div>
+        <button id='parsonize-code'>parsonize code</button>
+      </div>
+      <br>
+      <div id="editor" style="position: relative; width: 80vw; height: 70vh;"></div>
+    </div>
+  </section>
 
-  <span style='display:flex;flex-direction: row;' id="control-panel">
-    <button id='feedbackLink'>evaluate</button>
-    <button id='newInstanceLink'>re-shuffle</button>
-    <a href="#open-modal"><button id='review-guesses'>review guesses</button></a>
-  </span>
   <br>
   <hr>
   <hr>

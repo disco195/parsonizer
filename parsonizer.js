@@ -1,7 +1,12 @@
 const parsonizer = {
   guesses: [],
-  init: function () {
-    const parsonsCode = parsonizer.loadFromURL()
+  views: {
+    editor: null,
+    parsons: null,
+    main: null,
+    guesses: null
+  },
+  newJsParsons: function (parsonsCode) {
 
     function displayErrors(fb) {
       if (fb.errors.length > 0) {
@@ -28,7 +33,47 @@ const parsonizer = {
       parsonsInstance.getFeedback();
     });
 
-    this.instance = parsonsInstance;
+    return parsonsInstance;
+  },
+  init: function () {
+
+    const editor = ace.edit(parsonizer.views.editor);
+
+    editor.setTheme('ace/theme/chrome');
+    editor.setFontSize(13);
+    editor.getSession().setMode('ace/mode/javascript');
+    editor.getSession().setTabSize(2);
+    editor.on("change", (e) => {
+      const code = editor.getValue()
+      window.history.pushState({}, null, '?code=' + encodeURIComponent(code));
+    });
+
+    document.getElementById('edit-code').addEventListener('click', () => {
+      editor.setValue(parsonizer.solution);
+
+      parsonizer.views.main.removeChild(parsonizer.views.parsons);
+      parsonizer.views.main.appendChild(parsonizer.views.editorContainer);
+    });
+
+    document.getElementById('parsonize-code').addEventListener('click', () => {
+
+      parsonizer.solution = editor.getValue();
+      parsonizer.guesses = [];
+      parsonizer.views.guesses.innerHTML = '';
+
+      parsonizer.views.main.removeChild(parsonizer.views.editorContainer);
+      parsonizer.views.main.appendChild(parsonizer.views.parsons);
+
+      parsonizer.instance = parsonizer.newJsParsons(editor.getValue());
+    });
+
+
+    this.views.main.removeChild(this.views.editorContainer);
+
+    const parsonsCode = parsonizer.loadFromURL()
+    parsonizer.solution = parsonsCode
+    parsonizer.instance = this.newJsParsons(parsonsCode);
+
   },
   initModal: function () {
 
