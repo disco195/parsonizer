@@ -6,15 +6,14 @@
 
   <link href="./js-parsons/parsons.css" rel="stylesheet" />
   <link href="./js-parsons/lib/prettify.css" rel="stylesheet" />
-
   <script src="./js-parsons/lib/prettify.js"></script>
   <script src="./js-parsons/include.js"></script>
 
+  <link href="./modal.css" rel="stylesheet" />
 
-  <script src="./load-from-url.js"></script>
-  <script>
-    window.onload = loadFromURL;
-  </script>
+  <script src="./parsonizer.js"></script>
+
+  <script src='./init.js'></script>
 </head>
 
 <body>
@@ -26,8 +25,9 @@
   </div>
 
   <span style='display:flex;flex-direction: row;' id="control-panel">
-    <button id='newInstanceLink' class='parsonizer-button'>re-shuffle</button>
-    <button id='feedbackLink' class='parsonizer-button'>evaluate</button>
+    <button id='feedbackLink'>evaluate</button>
+    <button id='newInstanceLink'>re-shuffle</button>
+    <a href="#open-modal"><button id='review-guesses'>review guesses</button></a>
   </span>
   <br>
   <hr>
@@ -46,7 +46,17 @@
       width="40" height="40" /> Janke Learning</a>
 
 
-  <!-- why it works -->
+  <!-- begin guess history modal -->
+
+  <div id="open-modal" class="modal-window">
+    <div>
+      <a href="#modal-close" title="Close" class="modal-close">close &times;</a>
+      <div id="the-guesses" style="overflow: scroll; display: flex; flex-direction: column;"></div>
+    </div>
+  </div>
+
+  <!-- end guess history modal -->
+
   <script src="./js-parsons/lib/jquery.min.js"></script>
   <script src="./js-parsons/lib/jquery-ui.min.js"></script>
   <script src="./js-parsons/lib/jquery.ui.touch-punch.min.js"></script>
