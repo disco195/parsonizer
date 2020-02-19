@@ -44,8 +44,11 @@ const parsonizer = {
     editor.getSession().setMode('ace/mode/javascript');
     editor.getSession().setTabSize(2);
     editor.on("change", (e) => {
-      const code = editor.getValue()
-      window.history.pushState({}, null, '?code=' + encodeURIComponent(code));
+      const code = editor.getValue();
+      const encoded = encodeURIComponent(code);
+      var sanitized = encoded.replace(/\(/g, '%28').replace(/\)/g, '%29');
+      var deTabbed = sanitized.replace(/%09/g, '%20%20');
+      window.history.pushState({}, null, '?code=' + deTabbed);
     });
 
     document.getElementById('edit-code').addEventListener('click', () => {
