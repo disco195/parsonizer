@@ -823,7 +823,9 @@
     if (codestring) {
       // Consecutive lines to be dragged as a single block of code have strings "\\n" to
       // represent newlines => replace them with actual new line characters "\n"
-      this.code = codestring.replace(/#distractor\s*$/, "").replace(trimRegexp, "$1").replace(/\\n/g, "\n");
+      // hack - also replace distractors comments written with JS
+      // this.code = codestring.replace(/#distractor\s*$/, "").replace(trimRegexp, "$1").replace(/\\n/g, "\n");
+      this.code = codestring.replace(/\/\/distractor\s*$/, "").replace(trimRegexp, "$1").replace(/\\n/g, "\n");
       this.indent = codestring.length - codestring.replace(/^\s+/, "").length;
     }
   };
@@ -987,7 +989,9 @@
     $.each(lines, function (index, item) {
       lineObject = new ParsonsCodeline(item, that);
       lineObject.orig = index;
-      if (item.search(/#distractor\s*$/) >= 0) {
+      // hack - also count JS comment distractors
+      // if (item.search(/#distractor\s*$/) >= 0) {
+      if (item.search(/\/\/distractor\s*$/) >= 0) {
         // This line is a distractor
         lineObject.indent = -1;
         lineObject.distractor = true;
@@ -1008,11 +1012,11 @@
 
     var normalized = this.normalizeIndents(indented);
 
-    $.each(normalized, function (index, item) {
-      if (item.indent < 0) {
-        // Indentation error
-        errors.push(this.translations.no_matching(normalized.orig));
-      }
+    $.each(normalized, function (index, item) { // hack - allow code to be indented on first line
+      // if (item.indent < 0) {
+      //   // Indentation error
+      //   errors.push(this.translations.no_matching(normalized.orig));
+      // }
       widgetData.push(item);
     });
 

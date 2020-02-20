@@ -16,7 +16,7 @@ const parsonizer = {
     const parsonsInstance = new ParsonsWidget({
       'sortableId': 'sortable',
       'trashId': 'sortableTrash',
-      // 'max_wrong_lines': 1, // ?
+      'max_wrong_lines': 1,
       'feedback_cb': displayErrors,
       'first_error_only': false,
     });
@@ -58,16 +58,32 @@ const parsonizer = {
       parsonizer.views.main.appendChild(parsonizer.views.editorContainer);
     });
 
+    document.getElementById('beautify-code').addEventListener('click', () => {
+      editor.setValue(
+        js_beautify(
+          editor.getValue(),
+          {
+            'indent_level': 0,
+            'indent_size': 2,
+            'indent_char': ' ',
+            "brace_style": "collapse,preserve-inline",
+          }
+        )
+      );
+    });
+
     document.getElementById('parsonize-code').addEventListener('click', () => {
 
-      parsonizer.solution = editor.getValue();
+      const newCode = editor.getValue();
+      parsonizer.solution = newCode;
+
       parsonizer.guesses = [];
       parsonizer.views.guesses.innerHTML = '';
 
       parsonizer.views.main.removeChild(parsonizer.views.editorContainer);
       parsonizer.views.main.appendChild(parsonizer.views.parsons);
 
-      parsonizer.instance = parsonizer.newJsParsons(editor.getValue());
+      parsonizer.instance = parsonizer.newJsParsons(newCode);
     });
 
 
@@ -148,8 +164,8 @@ const parsonizer = {
         "  const reversed = splitted.reverse();\n" +
         "  const joined = reversed.join('');\n" +
         "  return joined;\n" +
-        "};\n" +
-        "return reversed; #distractor"
+        "}\n" +
+        "return reversed; //distractor"
     };
 
     return parsonsCode;
